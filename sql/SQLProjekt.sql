@@ -38,6 +38,7 @@ CREATE TABLE Produkte (
     ProduktArt VARCHAR(255) NOT NULL,
     ProduktPreis FLOAT(10, 2) NOT NULL,
     ProduktBeschreibung TEXT,
+    BildPath VARCHAR(255),
     AnzahlLagernd INT(11) DEFAULT 0,
     Verfuegbarkeit BOOLEAN DEFAULT FALSE
 );
