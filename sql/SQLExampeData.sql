@@ -78,30 +78,30 @@ VALUES (
         5,
         1
     );
-INSERT INTO Rechnungen (
+INSERT INTO Bestellungen (
         Gesamtpreis,
-        RechnungStatus,
+        BestellungStatus,
         Rabattcode,
         VersandArt,
         Zahlungsmethode,
-        RechnungsadresseID,
+        BestellungsadresseID,
         LieferadresseID,
         WarenkorbID
     )
 VALUES (100.00, 1, 1, 1, 1, 1, 2, 1);
-INSERT INTO Rechnungen (
+INSERT INTO Bestellungen (
         Gesamtpreis,
-        RechnungStatus,
+        BestellungStatus,
         VersandArt,
         Zahlungsmethode,
-        RechnungsadresseID,
+        BestellungsadresseID,
         LieferadresseID,
         WarenkorbID
     )
 VALUES (50.00, 'Cancelled', 2, 2, 2, 2, 2);
-INSERT INTO Rechnungsstatus (StatusBezeichnung)
+INSERT INTO Bestellungsstatus (StatusBezeichnung)
 VALUES ('Completed');
-INSERT INTO Rechnungsstatus (StatusBezeichnung)
+INSERT INTO Bestellungsstatus (StatusBezeichnung)
 VALUES ('Cancelled');
 INSERT INTO Rabattcodes (Code, Wert)
 VALUES ('SALE20', 20);

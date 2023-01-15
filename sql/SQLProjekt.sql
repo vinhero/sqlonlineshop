@@ -42,11 +42,11 @@ CREATE TABLE Produkte (
     AnzahlLagernd INT(11) DEFAULT 0,
     Verfuegbarkeit BOOLEAN DEFAULT FALSE
 );
-CREATE TABLE Rechnungsstatus (
+CREATE TABLE Bestellungsstatus (
     StID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StatusBezeichnung VARCHAR(255) NOT NULL
 );
--- Rechnungen & Rechnungsinhalte
+-- Bestellungen & Bestellungsinhalte
 CREATE TABLE Rabattcodes (
     RtID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Code VARCHAR(255) NOT NULL,
@@ -61,21 +61,21 @@ CREATE TABLE Zahlungsmethoden (
     Anbieter VARCHAR(255) NOT NULL,
     Gebuehr FLOAT(10, 2)
 );
-CREATE TABLE Rechnungen (
-    RnID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Bestellungen (
+    BnID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Gesamtpreis FLOAT(10, 2) DEFAULT 0.00,
-    RechnungStatusID INT(11) NOT NULL,
+    BestellungStatusID INT(11) NOT NULL,
     RabattcodeID INT(11) NOT NULL,
     VersandArtID INT(11) NOT NULL,
     ZahlungsmethodeID INT(11) NOT NULL,
-    RechnungsadresseID INT(11) NOT NULL,
+    BestellungsadresseID INT(11) NOT NULL,
     LieferadresseID INT(11) NOT NULL,
     WarenkorbID INT(11) NOT NULL,
-    FOREIGN KEY (RechnungStatusID) REFERENCES Rechnungsstatus(StID),
+    FOREIGN KEY (BestellungStatusID) REFERENCES Bestellungsstatus(StID),
     FOREIGN KEY (RabattcodeID) REFERENCES Rabattcodes(RtID),
     FOREIGN KEY (VersandArtID) REFERENCES Versandarten(VtID),
     FOREIGN KEY (ZahlungsmethodeID) REFERENCES Zahlungsmethoden(ZeID),
-    FOREIGN KEY (RechnungsadresseID) REFERENCES Adressen(AeID),
+    FOREIGN KEY (BestellungsadresseID) REFERENCES Adressen(AeID),
     FOREIGN KEY (LieferadresseID) REFERENCES Adressen(AeID),
     FOREIGN KEY (WarenkorbID) REFERENCES Warenkorb(WbID)
 );
