@@ -88,7 +88,7 @@ INSERT INTO Rechnungen (
         LieferadresseID,
         WarenkorbID
     )
-VALUES (100.00, 'Completed', 'SALE20', 1, 1, 1, 2, 1);
+VALUES (100.00, 1, 1, 1, 1, 1, 2, 1);
 INSERT INTO Rechnungen (
         Gesamtpreis,
         RechnungStatus,
@@ -113,3 +113,9 @@ INSERT INTO Zahlungsmethoden (Anbieter, Gebuehr)
 VALUES ('Visa', 2.00);
 INSERT INTO Zahlungsmethoden (Anbieter, Gebuehr)
 VALUES ('MasterCard', 3.00);
+INSERT INTO Versandlaender (Landname, Landkuerzel)
+VALUES ('Deutschland', 'DE');
+INSERT INTO Versandlaender (Landname, Landkuerzel)
+VALUES ('Austria', 'AUT');
+INSERT INTO Versandlaender (Landname, Landkuerzel)
+VALUES ('Schweiz', 'CHE');
