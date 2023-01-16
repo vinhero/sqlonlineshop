@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Website</title>
+</head>
+<body>
+  <?php include 'php/connection.php'; ?>
+  <h1>Welcome to my website!</h1>
+
+  <form action="php/select.php" method="post">
+    <label for="search">Search:</label>
+    <input type="text" id="search" name="search">
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>
