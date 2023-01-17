@@ -1,16 +1,84 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>My Website</title>
-</head>
-<body>
-  <?php include 'php/connection.php'; ?>
-  <h1>Welcome to my website!</h1>
+  <head>
+    <!-- JQuery -->
+    <script src="../lib/jquery-3.6.3-dist/jquery-3.6.3.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../lib/bootstrap-4.6.2-dist/css/bootstrap.min.css">
+    <script src="../lib/bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
+    <title>SQL Project</title>
+  </head>
+  <body>
 
-  <form action="php/select.php" method="post">
-    <label for="search">Search:</label>
-    <input type="text" id="search" name="search">
-    <input type="submit" value="Submit">
-  </form>
-</body>
+    <script>
+    function sendAjaxRequest() {
+      var UserName = document.getElementById("UserName").value;
+      var Password = document.getElementById("Password").value;
+      var sql = `SELECT * FROM benutzer WHERE benutzer.BenutzerName = '${UserName}' AND benutzer.Passwort = '${Password}'`;
+      
+      $.ajax({
+          type: "GET",
+          url: "http://localhost/php/query.php" + "?sql=" + sql,
+          dataType: 'json',
+          success: function(response) {
+            if (response.length > 0){
+              console.info(sql);
+              console.table(response);
+              document.getElementById("Login").hidden = true;
+              debugger;
+
+            }
+            else {
+              console.warn("Kein Erfolg bei der Abfrage: " + sql);
+              alert("Deine Login Daten sind leider falsch! Versuche es erneut.");
+            }
+          }
+      });
+    }
+    </script>
+    
+    <div id="Login">
+      <h1>Login</h1>
+      <label for="UserName">Benutzername:</label>
+      <input type="text" id="UserName" name="UserName">
+      <br><br>
+      <label for="Password">Passwort:</label>
+      <input type="password" id="Password" name="Password">
+      <br><br>
+      <button id="submitBtn" onclick="sendAjaxRequest()">Login</button>
+    </div>
+
+    <div id="ShopPage">
+      <h1>Shop-Seite</h1>
+
+    </div>
+   
+  
+    
+    <!--<div id="table"></div>
+    <script>
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost/php/query.php?sql=SELECT * FROM Produkte',
+      dataType: 'json',
+      success: function(data) {
+        console.table(data);
+        // Tabelle erstellen
+        var table = "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th></tr>";
+        // Daten in die Tabelle einfügen
+        for (var i = 0; i < data.length; i++) {
+            table += "<tr><td>" + data[i].id + "</td><td>" + data[i].firstname + "</td><td>" + data[i].lastname + "</td></tr>";
+        }
+        table += "</table>";
+        // Tabelle anzeigen
+        if(document.getElementById("table")) {
+            document.getElementById("table").innerHTML = table;
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus, errorThrown);
+      }
+    });
+    </script>-->
+  </body>
 </html>
