@@ -8,10 +8,26 @@
     <script src="../lib/bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
     <title>SQL Project</title>
   </head>
-  <body>
+  <body>    
 
     <script>
-    function sendAjaxRequest() {
+      var currentUser = {};
+    </script>
+    
+    <script>
+    function updateLastLogin(userID){
+      var sql = `UPDATE benutzer SET benutzer.LetzterLogin = NOW() WHERE benutzer.BrID = ${userID}`;
+      console.info(sql);
+      $.ajax({
+          type: "GET",
+          url: "http://localhost/php/query.php" + "?sql=" + sql,
+          dataType: 'json',
+          success: function(response) {
+          }
+      });
+    }
+
+    function loginRequest() {
       var UserName = document.getElementById("UserName").value;
       var Password = document.getElementById("Password").value;
       var sql = `SELECT * FROM benutzer WHERE benutzer.BenutzerName = '${UserName}' AND benutzer.Passwort = '${Password}'`;
@@ -26,7 +42,10 @@
               console.table(response);
               document.getElementById("Login").hidden = true;
               debugger;
-
+              currentUser = response[0];
+              updateLastLogin(currentUser.BrID);
+              debugger;
+              loadShop();
             }
             else {
               console.warn("Kein Erfolg bei der Abfrage: " + sql);
@@ -45,40 +64,122 @@
       <label for="Password">Passwort:</label>
       <input type="password" id="Password" name="Password">
       <br><br>
-      <button id="submitBtn" onclick="sendAjaxRequest()">Login</button>
+      <button id="submitBtn" onclick="loginRequest()">Login</button>
     </div>
 
-    <div id="ShopPage">
-      <h1>Shop-Seite</h1>
 
-    </div>
-   
-  
-    
-    <!--<div id="table"></div>
     <script>
-    $.ajax({
-      type: 'GET',
-      url: 'http://localhost/php/query.php?sql=SELECT * FROM Produkte',
-      dataType: 'json',
-      success: function(data) {
-        console.table(data);
-        // Tabelle erstellen
-        var table = "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th></tr>";
-        // Daten in die Tabelle einfügen
-        for (var i = 0; i < data.length; i++) {
-            table += "<tr><td>" + data[i].id + "</td><td>" + data[i].firstname + "</td><td>" + data[i].lastname + "</td></tr>";
-        }
-        table += "</table>";
-        // Tabelle anzeigen
-        if(document.getElementById("table")) {
-            document.getElementById("table").innerHTML = table;
-        }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error(textStatus, errorThrown);
+      function requestAllProducts(){
+        var sql = `SELECT * FROM Produkte`;
+      
+      $.ajax({
+          type: "GET",
+          url: "http://localhost/php/query.php" + "?sql=" + sql,
+          dataType: 'json',
+          success: function(response) {
+            if (response.length > 0){
+              console.info(sql);
+              console.table(response);
+              debugger;
+              response.forEach(product => {
+                document.getElementById("shelf").innerHTML += `<div id='${product.PrID}'>`;
+                document.getElementById("shelf").innerHTML += `<h2>${product.ProduktName}</h2>`;
+                document.getElementById("shelf").innerHTML += `<img src='${product.BildPath}' style="width: 300px; height: 300px;">`;
+                document.getElementById("shelf").innerHTML += `<p>${product.ProduktBeschreibung}</p>`;
+                document.getElementById("shelf").innerHTML += `<p>Preis: ${product.ProduktPreis}</p>`;
+                if (parseInt(product.Verfuegbarkeit) == true){
+                  document.getElementById("shelf").innerHTML += "<button>Hinzufügen</button>";
+                }
+                else {
+                  document.getElementById("shelf").innerHTML += "<button>nicht Verfügbar</button>";
+                }
+                document.getElementById("shelf").innerHTML += "</div>";
+              });
+            }
+            else {
+              console.warn("Kein Erfolg bei der Abfrage: " + sql);
+            }
+          }
+      });
       }
-    });
-    </script>-->
+
+      function loadShop(){
+        requestAllProducts();
+        document.getElementById("ShopPage").hidden = false;
+      }
+    </script>
+
+    <script>
+      function getZwischenpreis(){
+        var sql = `SELECT SUM(warenkorb_produkte.Anzahl * Produkte.ProduktPreis) as Warenkorbpreis FROM Warenkorb JOIN warenkorb_produkte ON Warenkorb.WbID = warenkorb_produkte.WarenkorbID JOIN Produkte ON warenkorb_produkte.ProduktID = Produkte.PrID WHERE Warenkorb.WbID = ${currentUser.WarenkorbID};`;
+      
+        $.ajax({
+            type: "GET",
+            url: "http://localhost/php/query.php" + "?sql=" + sql,
+            dataType: 'json',
+            success: function(response) {
+              if (response.length > 0){
+                console.info(sql);
+                console.table(response);
+                document.getElementById("korb").innerHTML += `<h2>Zwischenpreis: ${response[0].Warenkorbpreis}</h2>`;
+                document.getElementById("korb").innerHTML += `<div style="border: 1px solid black;"></div>`;
+                debugger;
+              }
+              else {
+                console.warn("Kein Erfolg bei der Abfrage: " + sql);
+              }
+            }
+        });
+      }
+
+      function showWarenkorb(){
+        document.getElementById("ShopPage").hidden = true;
+        document.getElementById("Warenkorb").hidden = false;
+        
+        var sql = `SELECT Produkte.ProduktName, produkte.ProduktPreis as Einzelpreis, warenkorb_produkte.Anzahl as ImWarenkorb, warenkorb_produkte.Anzahl * Produkte.ProduktPreis as TotalPreis FROM Warenkorb JOIN warenkorb_produkte ON Warenkorb.WbID = warenkorb_produkte.WarenkorbID JOIN Produkte ON warenkorb_produkte.ProduktID = Produkte.PrID WHERE Warenkorb.WbID = ${currentUser.WarenkorbID};`;
+      
+        $.ajax({
+            type: "GET",
+            url: "http://localhost/php/query.php" + "?sql=" + sql,
+            dataType: 'json',
+            success: function(response) {
+              if (response.length > 0){
+                console.info(sql);
+                console.table(response);
+                
+                response.forEach(product => {
+                  document.getElementById("korb").innerHTML += `<div style="border: 1px solid black;">`;
+                  document.getElementById("korb").innerHTML += `<p>Name: ${product.ProduktName}</p>`;
+                  document.getElementById("korb").innerHTML += `<p>Einzelpreis: ${product.Einzelpreis}</p>`;
+                  document.getElementById("korb").innerHTML += `<p>Anzahl: ${product.ImWarenkorb}</p>`;
+                  document.getElementById("korb").innerHTML += `<p>Total: ${product.TotalPreis}</p>`;
+                  document.getElementById("korb").innerHTML += `</div>`;
+                });
+                document.getElementById("korb").innerHTML += `<div style="border: 1px solid black;"></div>`;
+                document.getElementById("korb").innerHTML += `<div style="border: 1px solid black;"></div>`;
+                debugger;
+                getZwischenpreis();
+              }
+              else {
+                console.warn("Kein Erfolg bei der Abfrage: " + sql);
+              }
+            }
+        });
+      }
+    </script>
+
+    <div id="ShopPage" hidden=true>
+      <h1>Shop-Seite</h1>
+      <img src='../assets/warenkorb.png' style="width: 50px; height: 50px;" onclick="showWarenkorb()">
+      <div id="shelf">
+      </div>
+    </div>
+
+    <div id="Warenkorb" hidden="true">
+      <h1>Warenkorb</h1>
+      <div id="korb">
+      </div>
+    </div>
+
   </body>
 </html>

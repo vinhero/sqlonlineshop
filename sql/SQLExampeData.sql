@@ -13,13 +13,13 @@ INSERT INTO Benutzer (
         WarenkorbID
     )
 VALUES (
-        'JohnDoe',
-        'johndoe@email.com',
+        'user1',
+        'user1@example.com',
         'password123',
         'John',
         'Doe',
-        '1990-01-01',
-        '2022-01-01',
+        '1970-01-01',
+        '2022-12-31',
         1
     );
 INSERT INTO Benutzer (
@@ -33,90 +33,108 @@ INSERT INTO Benutzer (
         WarenkorbID
     )
 VALUES (
-        'JaneDoe',
-        'janedoe@email.com',
+        'user2',
+        'user2@example.com',
         'password456',
         'Jane',
-        'Doe',
-        '1995-01-01',
-        '2022-01-01',
+        'Smith',
+        '1980-02-15',
+        '2022-11-15',
         2
     );
 INSERT INTO Adressen (PLZ, Ort, StrassenName, HausNr, Land)
-VALUES (12345, 'New York', 'Main St', '1', 'USA');
+VALUES (12345, 'City1', 'Street1', '1', 'Country1');
 INSERT INTO Adressen (PLZ, Ort, StrassenName, HausNr, Land)
-VALUES (67890, 'Los Angeles', 'Sunset Blvd', '2', 'USA');
+VALUES (67890, 'City2', 'Street2', '2', 'Country2');
 INSERT INTO Produkte (
         ProduktName,
         ProduktArt,
         ProduktPreis,
         ProduktBeschreibung,
+        BildPath,
         AnzahlLagernd,
         Verfuegbarkeit
     )
 VALUES (
-        'Shoe',
-        'Footwear',
-        50.00,
-        'A comfortable shoe',
+        'Wide Phone',
+        'Smartphone',
+        999.98,
+        'A wide Version of the normal IPhone.. so like a IPad.. but as a Phone.',
+        '../assets/iphone.webp',
         10,
-        1
+        TRUE
     );
 INSERT INTO Produkte (
         ProduktName,
         ProduktArt,
         ProduktPreis,
         ProduktBeschreibung,
+        BildPath,
         AnzahlLagernd,
         Verfuegbarkeit
     )
 VALUES (
-        'Hat',
-        'Accessories',
-        20.00,
-        'A stylish hat',
-        5,
-        1
+        'Motorola',
+        'Foldable Phone',
+        5599.99,
+        'A foldable Phone to look like a rich Nerd.',
+        '../assets/Motorola.jpg',
+        3,
+        TRUE
+    );
+INSERT INTO Produkte (
+        ProduktName,
+        ProduktArt,
+        ProduktPreis,
+        ProduktBeschreibung,
+        BildPath,
+        AnzahlLagernd,
+        Verfuegbarkeit
+    )
+VALUES (
+        'Nokia',
+        'A Brick',
+        599.99,
+        'Speaks for itself.',
+        '../assets/Nokia.jpg',
+        0,
+        FALSE
     );
 INSERT INTO Bestellungsstatus (StatusBezeichnung)
-VALUES ('Completed');
+VALUES ('In Bearbeitung');
 INSERT INTO Bestellungsstatus (StatusBezeichnung)
-VALUES ('Cancelled');
-INSERT INTO Bestellungen (
-        Gesamtpreis,
-        BestellungStatusID,
-        RabattcodeID,
-        VersandArtID,
-        ZahlungsmethodeID,
-        BestellungsadresseID,
-        LieferadresseID,
-        WarenkorbID
-    )
-VALUES (100.00, 1, 1, 1, 1, 1, 2, 1);
-INSERT INTO Bestellungen (
-        Gesamtpreis,
-        BestellungStatusID,
-        RabattcodeID,
-        VersandArtID,
-        ZahlungsmethodeID,
-        BestellungsadresseID,
-        LieferadresseID,
-        WarenkorbID
-    )
-VALUES (50.00, 2, 2, 2, 2, 2, 2, 2);
+VALUES ('Versendet');
 INSERT INTO Rabattcodes (Code, Wert)
-VALUES ('SALE20', 20);
-INSERT INTO Versandarten (Lieferant)
-VALUES ('FedEx');
+VALUES ('SUMMER20', 20);
+INSERT INTO Rabattcodes (Code, Wert)
+VALUES ('WINTER10', 10);
 INSERT INTO Versandarten (Lieferant)
 VALUES ('UPS');
+INSERT INTO Versandarten (Lieferant)
+VALUES ('FedEx');
 INSERT INTO Zahlungsmethoden (Anbieter, Gebuehr)
-VALUES ('Visa', 2.00);
+VALUES ('PayPal', 1.00);
 INSERT INTO Zahlungsmethoden (Anbieter, Gebuehr)
-VALUES ('MasterCard', 3.00);
-INSERT INTO Versandlaender (Landname, Landkuerzel)
-VALUES ('Deutschland', 'DE');
-INSERT INTO Versandlaender (Landname, Landkuerzel)
-VALUES ('Austria', 'AUT');
-INSERT INTO Versandlaender (Landname, Landkuerzel)
-VALUES ('Schweiz', 'CHE');
+VALUES ('Credit Card', 2.50);
+INSERT INTO Bestellungen (
+        Gesamtpreis,
+        BestellungStatusID,
+        RabattcodeID,
+        VersandArtID,
+        ZahlungsmethodeID,
+        BestellungsadresseID,
+        LieferadresseID,
+        WarenkorbID
+    )
+VALUES (100, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO Bestellungen (
+        Gesamtpreis,
+        BestellungStatusID,
+        RabattcodeID,
+        VersandArtID,
+        ZahlungsmethodeID,
+        BestellungsadresseID,
+        LieferadresseID,
+        WarenkorbID
+    )
+VALUES (75.00, 2, 2, 2, 2, 2, 2, 2);
